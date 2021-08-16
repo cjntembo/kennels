@@ -14,15 +14,15 @@ export const EmployeeProvider = (props) => {
         .then(setEmployees)
     }
 
-    const addEmployee = employeeObj => {
+    const addEmployee = employee => {
         return fetch("http://localhost:8088/employees", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(employeeObj)
+            body: JSON.stringify(employee)
         })
-        .then(getEmployees)
+        .then(response => response.json())
     }
 
     /*

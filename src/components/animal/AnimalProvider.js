@@ -8,22 +8,41 @@ export const AnimalContext = createContext()
 export const AnimalProvider = (props) => {
     const [animals, setAnimals] = useState([])
 
-    const getAnimals = () => {
-        return fetch("http://localhost:8088/animals?_expand=location")
-        .then(res => res.json())
-        .then(setAnimals)
-    }
+    // const getAnimals = () => {
+    //     return fetch("http://localhost:8088/animals?_expand=location")
+    //     .then(res => res.json())
+    //     .then(setAnimals)
+    // }
 
-    const addAnimal = animalObj => {
+    const getAnimals = () => {
+        return fetch("http://localhost:8088/animals?_expand=customer&_expand=location&_sort=location.id")
+            .then(res => res.json())
+            .then(setAnimals)
+    }
+    
+
+    // const addAnimal = animalObj => {
+    //     return fetch("http://localhost:8088/animals", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify(animalObj)
+    //     })
+    //     .then(getAnimals)
+    // }
+
+    const addAnimal = animal => {
         return fetch("http://localhost:8088/animals", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(animalObj)
+            body: JSON.stringify(animal)
         })
-        .then(getAnimals)
+        .then(response => response.json())
     }
+    
 
     /*
         You return a context provider which has the

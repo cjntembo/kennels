@@ -3,6 +3,7 @@ import { AnimalList } from "./animal/AnimalList"
 import { AnimalProvider } from "./animal/AnimalProvider"
 import { AnimalForm } from "./animal/AnimalForm"
 import { AnimalDetail } from "./animal/AnimalDetail"
+import { AnimalSearch } from "./animal/AnimalSearch"
 import { CustomerProvider } from "./customers/CustomerProvider"
 import { CustomerList } from "./customers/CustomerList"
 import { EmployeeProvider } from "./employees/EmployeeProvider"
@@ -37,11 +38,17 @@ export const ApplicationViews = () => {
           <CustomerProvider>
             <EmployeeProvider>
 
-              <Route exact path="/animals">
+              {/* <Route exact path="/animals">
                 <AnimalList />
               </Route>
-                
-              <Route exact path="/animals/create">
+               */}
+              {/* Add a new route in ApplicationViews for editing an animal. Consider what providers you will need. What data will be editable? Can we re-use the AnimalForm? */}
+              {/* <Route exact path="/animals/create"> */}
+              <Route path="/animals/edit/:animalId(\d+)">
+                <AnimalForm />
+              </Route>
+
+              <Route path="/animals/create">
                 <AnimalForm />
               </Route>
 
@@ -49,8 +56,17 @@ export const ApplicationViews = () => {
                 <AnimalDetail />
               </Route>
 
+              <Route exact path="/animals">
+                <AnimalSearch />
+                <AnimalList />
+              </Route>
+
               <Route exact path="/locations">
                 <LocationList />
+              </Route>
+
+              <Route exact path="/locations/edit/:locationId(\d+)">
+                <LocationForm />
               </Route>
 
               <Route exact path="/locations/create">
@@ -61,16 +77,20 @@ export const ApplicationViews = () => {
                 <LocationDetail />
               </Route>
 
-              <Route path="/customers">
+              <Route exact path="/customers">
                 <CustomerList />
               </Route>
 
-              <Route exact path="/employees">
-                <EmployeeList />
+              <Route exact path="/employees/edit/:employeeId(\d+)">
+                <EmployeeForm />
               </Route>
 
               <Route exact path="/employees/create">
                 <EmployeeForm />
+              </Route>
+
+              <Route exact path="/employees">
+                <EmployeeList />
               </Route>
 
               <Route exact path="/employees/detail/:employeeId(\d+)">

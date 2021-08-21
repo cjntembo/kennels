@@ -1,4 +1,5 @@
 import React, { useState, createContext } from "react"
+import { Animal } from "../animal/Animal"
 
 
 // The context is imported and used by individual components that need data
@@ -25,6 +26,30 @@ export const EmployeeProvider = (props) => {
         .then(response => response.json())
     }
 
+    const getEmployeeById = (employeeId) => {
+        return fetch(`http://localhost:8088/employees/${employeeId}`
+        )
+        .then(res => res.json())
+    }
+
+    const releaseEmployee = employeeId => {
+        return fetch(`http://localhost:8088/employees/${employeeId}`,{
+            method: "DELETE"
+        })
+        .then(getEmployees)
+    }
+
+    const updateEmployee = employee => {
+        return fetch(`http://localhost:8088.employees/${employee.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(employee)
+        })
+        .then(getEmployees)
+    }
+
     /*
         You return a context provider which has the
         `animals` state, `getAnimals` function,
@@ -33,7 +58,7 @@ export const EmployeeProvider = (props) => {
     */
     return (
         <EmployeeContext.Provider value={{
-            employees, getEmployees, addEmployee
+            employees, getEmployees, addEmployee, releaseEmployee, updateEmployee, getEmployeeById
         }}>
             {props.children}
         </EmployeeContext.Provider>

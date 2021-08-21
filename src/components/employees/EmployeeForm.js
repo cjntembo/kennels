@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from "react"
 import { EmployeeContext } from "./EmployeeProvider"
 import { LocationContext } from "../locations/LocationProvider"
 import "./Employee.css"
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 export const EmployeeForm = () => {
-  const { addEmployee, getEmployees } = useContext(EmployeeContext)
+  const { addEmployee, getEmployeeById, updateEmployee } = useContext(EmployeeContext)
   const { locations, getLocations } = useContext(LocationContext)
   
 
@@ -18,11 +18,14 @@ export const EmployeeForm = () => {
   const [employee, setEmployee] = useState({
     name: "",
     locationId: 0,
-    manager: "",
-    fullTime: "",
+    manager: false,
+    fullTime: true,
     hourlyRate: ""
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  const {employeeId} = useParams();
   const history = useHistory();
 
   /*
@@ -30,7 +33,17 @@ export const EmployeeForm = () => {
   and locations state on initialization.
   */
   useEffect(() => {
-    getEmployees().then(getLocations)
+    getLocations().then(() => {
+      if (employeeId){
+        getEmployeeById(employeeId)
+        .then(employee => {
+          setEmployee(employee)
+          setIsLoading(false)
+        })
+      } else {
+        setIsLoading(false)
+      }
+    })
   }, [])
 
   //when a field changes, update state. The return will re-render and display based on the values in state
@@ -47,29 +60,58 @@ export const EmployeeForm = () => {
     setEmployee(newEmployee)
   }
 
-  const handleClickSaveEmployee = (event) => {
-    event.preventDefault() //Prevents the browser from submitting the form
 
-    const locationId = parseInt(employee.locationId)
-    
-
-    if (locationId === 0 ) {
-      window.alert("Please select a location and a employee")
+  const handleSaveEmployee = () => {
+    if (parseInt(employee.locationId) === 0) {
+      window.alert("Please select a location")
     } else {
-      //Invoke addAnimal passing the new animal object as an argument
-      //Once complete, change the url and display the animal list
-
-      const newEmployee = {
-        name: employee.name,
-        locationId: locationId,
-        manager: employee.manager,
-        fullTime: employee.fullTime,
-        hourlyRate: employee.hourlyRate
-      }
-      addEmployee(newEmployee)
+      setIsLoading(true);
+      if (employeeId){
+        updateEmployee({
+          id: employee.id,
+          name: employee.name,
+          locationId: parseInt(employee.locationId),
+          manager: employee.manager,
+          fullTime: employee.fullTime,
+          hourlyRate: employee.hourlyRate
+        })
+        .then(() => history.push(`/employees`))
+      } else {
+        addEmployee({
+          name: employee.name,
+          locationId: parseInt(employee.locationId),
+          manager: employee.manager,
+          fullTime: employee.fullTime,
+          hourlyRate: employee.hourlyRate
+        })
         .then(() => history.push("/employees"))
+      }
     }
   }
+
+  // const handleClickSaveEmployee = (event) => {
+  //   event.preventDefault() //Prevents the browser from submitting the form
+
+  //   const locationId = parseInt(employee.locationId)
+    
+
+  //   if (locationId === 0 ) {
+  //     window.alert("Please select a location and a employee")
+  //   } else {
+  //     //Invoke addAnimal passing the new animal object as an argument
+  //     //Once complete, change the url and display the animal list
+
+  //     const newEmployee = {
+  //       name: employee.name,
+  //       locationId: locationId,
+  //       manager: employee.manager,
+  //       fullTime: employee.fullTime,
+  //       hourlyRate: employee.hourlyRate
+  //     }
+  //     addEmployee(newEmployee)
+  //       .then(() => history.push("/employees"))
+  //   }
+  // }
 
   return (
     <form className="employeeForm">
@@ -98,8 +140,8 @@ export const EmployeeForm = () => {
           <label htmlFor="manager">Is Employee a Manager?:</label>
           <select name="manager" id="manager" className="form-control" value={employee.manager} onChange={handleControlledInputChange}>
             <option value="0">Select Yes or No</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
+            <option value={true}>Yes</option>
+            <option value={false}>No</option>
           </select>
         </div>
       </fieldset>
@@ -108,8 +150,8 @@ export const EmployeeForm = () => {
           <label htmlFor="fullTime">Is Employee Full Time?:</label>
           <select name="fullTime" id="fullTime" className="form-control" value={employee.fullTime} onChange={handleControlledInputChange}>
             <option value="0">Select Yes or No</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
+            <option value={true}>Yes</option>
+            <option value={false}>No</option>
           </select>
         </div>
       </fieldset>
@@ -119,9 +161,13 @@ export const EmployeeForm = () => {
           <input type="text" id="hourlyRate" required autoFocus className="form-control" placeholder="Employee Hourly Rate" value={employee.hourlyRate} onChange={handleControlledInputChange} />
         </div>
       </fieldset>
-      <button className="btn btn-primary" onClick={handleClickSaveEmployee}>
-        Save Employee
-          </button>
+      <button className="btn btn-primary"
+        disabled={isLoading}
+        onClick={event => {
+          event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+          handleSaveEmployee()
+        }}>
+      {employeeId ? <>Save Employee</> : <>Add Employee</>}</button>
     </form>
   )
 }

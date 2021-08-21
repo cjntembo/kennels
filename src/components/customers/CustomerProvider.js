@@ -3,19 +3,20 @@ import React, { useState, createContext } from "react"
 
 
 export const CustomerContext = createContext()
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
 
 
 export const CustomerProvider = (props) => {
   const [customers, setCustomers] = useState([])
 
   const getCustomers = () => {
-    return fetch("http://localhost:8088/customers")
+    return fetch(`${url}/customers`)
     .then(res => res.json())
     .then(setCustomers)
   }
 
   const addCustomer = customerObj => {
-    return fetch("http://localhost:8088/customers", {
+    return fetch(`${url}/customers`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

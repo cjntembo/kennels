@@ -3,6 +3,7 @@ import React, { useState, createContext } from "react"
 
 // The context is imported and used by individual components that need data
 export const AnimalContext = createContext()
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
 
 // This component establishes what data can be used.
 export const AnimalProvider = (props) => {
@@ -16,7 +17,7 @@ export const AnimalProvider = (props) => {
     // }
 
     const getAnimals = () => {
-        return fetch("http://localhost:8088/animals?_expand=customer&_expand=location&_sort=location.id")
+        return fetch(`${url}/animals?_expand=customer&_expand=location&_sort=location.id`)
             .then(res => res.json())
             .then(setAnimals)
     }
@@ -34,7 +35,7 @@ export const AnimalProvider = (props) => {
     // }
 
     const addAnimal = animal => {
-        return fetch("http://localhost:8088/animals", {
+        return fetch(`${url}/animals`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -45,20 +46,20 @@ export const AnimalProvider = (props) => {
     }
     
     const getAnimalById = (animalId) => {
-        return fetch(`http://localhost:8088/animals/${animalId}`
+        return fetch(`${url}/animals/${animalId}`
         )
         .then(res => res.json())
     }
 
     const releaseAnimal = animalId => {
-        return fetch(`http://localhost:8088/animals/${animalId}`, {
+        return fetch(`${url}/animals/${animalId}`, {
             method: "DELETE"
         })
             .then(getAnimals)
     }
     
     const updateAnimal = animal => {
-        return fetch(`http://localhost:8088/animals/${animal.id}`, {
+        return fetch(`${url}/animals/${animal.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"

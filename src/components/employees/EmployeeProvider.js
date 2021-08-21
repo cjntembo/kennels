@@ -4,19 +4,20 @@ import { Animal } from "../animal/Animal"
 
 // The context is imported and used by individual components that need data
 export const EmployeeContext = createContext()
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
 
 // This component establishes what data can be used.
 export const EmployeeProvider = (props) => {
     const [employees, setEmployees] = useState([])
 
     const getEmployees = () => {
-        return fetch("http://localhost:8088/employees?_expand=location")
+        return fetch(`${url}/employees?_expand=location`)
         .then(res => res.json())
         .then(setEmployees)
     }
 
     const addEmployee = employee => {
-        return fetch("http://localhost:8088/employees", {
+        return fetch(`${url}/employees`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -27,20 +28,20 @@ export const EmployeeProvider = (props) => {
     }
 
     const getEmployeeById = (employeeId) => {
-        return fetch(`http://localhost:8088/employees/${employeeId}`
+        return fetch(`${url}/employees/${employeeId}`
         )
         .then(res => res.json())
     }
 
     const releaseEmployee = employeeId => {
-        return fetch(`http://localhost:8088/employees/${employeeId}`,{
+        return fetch(`${url}/employees/${employeeId}`,{
             method: "DELETE"
         })
         .then(getEmployees)
     }
 
     const updateEmployee = employee => {
-        return fetch(`http://localhost:8088.employees/${employee.id}`, {
+        return fetch(`${url}.employees/${employee.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

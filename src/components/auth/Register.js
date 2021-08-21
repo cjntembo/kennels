@@ -2,7 +2,7 @@ import React, { useRef } from "react"
 import { useHistory } from "react-router-dom"
 import "./Login.css"
 
-const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com'
 
 export const Register = (props) => {
     const firstName = useRef()

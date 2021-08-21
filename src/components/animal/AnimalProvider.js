@@ -3,7 +3,7 @@ import React, { useState, createContext } from "react"
 
 // The context is imported and used by individual components that need data
 export const AnimalContext = createContext()
-const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com'
 
 // This component establishes what data can be used.
 export const AnimalProvider = (props) => {

@@ -4,7 +4,7 @@ import { Animal } from "../animal/Animal"
 
 // The context is imported and used by individual components that need data
 export const EmployeeContext = createContext()
-const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com'
 
 // This component establishes what data can be used.
 export const EmployeeProvider = (props) => {

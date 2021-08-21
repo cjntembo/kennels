@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom"
 import "./Login.css"
 
-const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com'
 
 export const Login = props => {
     const email = useRef()

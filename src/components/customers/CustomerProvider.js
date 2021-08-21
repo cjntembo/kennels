@@ -3,7 +3,7 @@ import React, { useState, createContext } from "react"
 
 
 export const CustomerContext = createContext()
-const url = 'https://e15-kennels-api-cjntembo.herokuapp.com/'
+const url = 'https://e15-kennels-api-cjntembo.herokuapp.com'
 
 
 export const CustomerProvider = (props) => {
